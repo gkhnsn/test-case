@@ -1,0 +1,12 @@
+function findMissing(firstArr, lastArr) {
+  const largeArr = (firstArr.length <= lastArr.length) ? lastArr : firstArr;
+  const smallArr = (firstArr.length <= lastArr.length) ? firstArr : lastArr;
+
+  return largeArr.filter(val => {
+    if (!smallArr.includes(val)) {
+      return val;
+    }
+  });
+}
+
+const result = findMissing([4,12,9,5,6,1], [4,9,12,6]);

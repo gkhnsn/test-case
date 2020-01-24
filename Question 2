@@ -1,0 +1,7 @@
+function rotate(arr, rotateNumb) {
+	arr.unshift(...arr.splice(rotateNumb));
+
+  return arr;
+}
+
+const result = rotate([1, 2, 3, 4, 5, 6], 1);

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Account Number List</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			fetch('account_numbers.txt').then(reponse => {
+				return reponse.text();
+			}).then(res => {
+				let a = document.createElement('a');
+				a.href = "data:application/octet-stream," + encodeURIComponent(listOfAccounts(res.split('\n')));
+				a.download = 'stdout.txt';
+				a.click();
+			});
+
+			function listOfAccounts(accountRes) {
+				const count = {};
+				accountRes.forEach((i) => {
+					count[i] = (count[i] || 0) + 1;
+				});
+
+				const numberOfTest = parseInt(accountRes[0]);
+				const numberOfAccount = parseInt(accountRes[1]);
+				const firstListOfAccount = 2 + numberOfAccount;
+				const skipIndexArr = [0, 1, firstListOfAccount, firstListOfAccount + 1];
+				let countAccountNumber = 1;
+				let accountNumberArr = [];
+
+				const accountList = accountRes.map((currAccount, index) => {
+					if (!skipIndexArr.includes(index)) {
+						countAccountNumber = count[currAccount];
+						count[currAccount] = (count[currAccount] || 0) - 1;
+
+						if (!accountNumberArr.includes(currAccount)) {
+							accountNumberArr.push(currAccount);
+
+							return `${currAccount} ${countAccountNumber}\n`;
+						}
+					} else if (firstListOfAccount === index) {
+						accountNumberArr = [];
+
+						return `\n`;
+					}
+				});
+
+				return accountList.join('');
+			}
+		</script>
+	</body>
+</html>
